@@ -1,0 +1,254 @@
+openapi: 3.0.3
+
+info:
+  title: Bank-transaction-application API
+  description: >
+    Ведется учет клиентов и их счетов и внутренний перевод между счетами каждого клиента. 
+    Каждый счет имеет свою валюту. Один клиент может иметь несколько счетов с разными валютами.
+  version: 0.1.1
+
+servers:
+  - url: http://myserver:8080/api/customers
+    description: it keeps customers of the bank
+
+  - url: ${scheme}://${host}:${port}${subpath}
+    description: it keeps accounts
+    variables:
+      scheme:
+        enum:
+          - http
+          - https
+          - ftp
+        default: http
+      host:
+        default: localhost
+      port:
+        default: '8080'
+      subpath:
+        default: api/accounts
+
+tags:
+  - name: customers
+    description: Operations with customers
+  - name: accounts
+    description: Operations with accounts
+
+paths:
+  /customers:
+    get:
+      tags:
+        - customers
+      parameters:
+        - in: header
+          name: Cache-Control
+          description: Время кэширования
+          schema:
+            type: string
+        - in: query
+          name: limit
+          description: Количество записей на странице
+          schema:
+            type: integer
+      operationId: getCustomers
+      responses:
+        200:
+          description: Список всех клиентов
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Customer"
+
+    post:
+      tags:
+        - customers
+      operationId: createCustomer
+      responses:
+        201:
+          description: Создан новый клиент
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+          links:
+            getCustomerById:
+              $ref: '#/components/links/getCustomerById'
+
+
+  /customers/{customerId}:
+    get:
+      tags:
+        - customers
+      operationId: getCustomer
+      parameters:
+        - in: path
+          name: customerId
+          required: true
+          description: Идентификатор клиента
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Информация об отдельном клиенте
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+    put:
+      tags:
+        - customers
+      operationId: updateCustomer
+      parameters:
+        - in: path
+          name: customerId
+          required: true
+          description: Идентификатор клиента
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Обновлен клиент
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+
+  /accounts:
+    get:
+      tags:
+        - accounts
+      operationId: getAccounts
+      responses:
+        200:
+          description: Список всех счетов
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Account"
+    post:
+      tags:
+        - accounts
+      operationId: createAccount
+      responses:
+        201:
+          description: Создан новый счет
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+
+  /accounts/{accountId}:
+    get:
+      tags:
+        - accounts
+      operationId: getAccount
+      parameters:
+        - in: path
+          name: accountId
+          required: true
+          description: Идентификатор счета
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Информация об отдельном счете
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+              example:  # Sample object
+                id: 12
+                iban: "UA12345678901234567890123456"
+                balance: 1000
+                currency: "UAH"
+                customerId: 1
+    put:
+      tags:
+        - accounts
+      operationId: updateAccount
+      parameters:
+        - in: path
+          name: accountId
+          required: true
+          description: Идентификатор счета
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Обновлен счет
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+          links:
+            getAccountById:
+              operationId: getAccount
+              parameters:
+                accountId: '$response.body#/id'
+                description: Получим счет по его Id
+
+    # Добавляем новый путь для Callback
+  /accounts/{accountId}/notify:
+    post:
+      tags:
+        - accounts
+      operationId: notifyBalanceChangeCallback
+      parameters:
+        - in: path
+          name: accountId
+          required: true
+          description: Идентификатор счета
+          schema:
+            type: integer
+      requestBody:
+        description: Уведомление об изменении баланса
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NotifyBalanceChange"
+      responses:
+        200:
+          description: Успешное уведомление
+
+components:
+  schemas:
+    Customer:
+      type: object
+      properties:
+        customerId:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+    Account:
+      type: object
+      properties:
+        accountId:
+          type: integer
+        iban:
+          type: string
+        balance:
+          type: integer
+        currency:
+          type: string
+        customerId:
+          type: integer
+    # Добавляем новую схему для уведомления об изменении баланса
+    NotifyBalanceChange:
+      type: object
+      properties:
+        accountId:
+          type: integer
+        newBalance:
+          type: integer
+    # Добавляем link для получения объекта Customer по ID
+  links:
+    getCustomerById:
+      description: Получим объект клиента по его Id
+      operationId: getCustomer
+      parameters:
+        customerId: '$response.body#/customerId'
