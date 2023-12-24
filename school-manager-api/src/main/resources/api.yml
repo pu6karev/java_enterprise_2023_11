@@ -3,8 +3,8 @@ openapi: 3.0.3
 info:
   title: Bank-transaction-application API
   description: >
-    Ведется учет клиентов и их счетов и внутренний перевод между счетами каждого клиента. 
-    Каждый счет имеет свою валюту. Один клиент может иметь несколько счетов с разными валютами.
+    Records are kept of clients and their accounts. An internal transfer is carried out between client accounts. 
+    Each account has its own currency. One client can have several accounts with different currencies.
   version: 0.1.1
 
 servers:
@@ -41,18 +41,18 @@ paths:
       parameters:
         - in: header
           name: Cache-Control
-          description: Время кэширования
+          description: Cache time
           schema:
             type: string
         - in: query
           name: limit
-          description: Количество записей на странице
+          description: Number of entries per page
           schema:
             type: integer
       operationId: getCustomers
       responses:
         200:
-          description: Список всех клиентов
+          description: List of all clients
           content:
             application/json:
               schema:
@@ -66,7 +66,7 @@ paths:
       operationId: createCustomer
       responses:
         201:
-          description: Создан новый клиент
+          description: New client created
           content:
             application/json:
               schema:
@@ -85,12 +85,12 @@ paths:
         - in: path
           name: customerId
           required: true
-          description: Идентификатор клиента
+          description: Client ID
           schema:
             type: integer
       responses:
         200:
-          description: Информация об отдельном клиенте
+          description: Individual client information
           content:
             application/json:
               schema:
@@ -103,12 +103,12 @@ paths:
         - in: path
           name: customerId
           required: true
-          description: Идентификатор клиента
+          description: Client ID
           schema:
             type: integer
       responses:
         200:
-          description: Обновлен клиент
+          description: Client updated
           content:
             application/json:
               schema:
@@ -121,7 +121,7 @@ paths:
       operationId: getAccounts
       responses:
         200:
-          description: Список всех счетов
+          description: List of all accounts
           content:
             application/json:
               schema:
@@ -134,7 +134,7 @@ paths:
       operationId: createAccount
       responses:
         201:
-          description: Создан новый счет
+          description: New account created
           content:
             application/json:
               schema:
@@ -149,12 +149,12 @@ paths:
         - in: path
           name: accountId
           required: true
-          description: Идентификатор счета
+          description: Account ID
           schema:
             type: integer
       responses:
         200:
-          description: Информация об отдельном счете
+          description: Individual account information
           content:
             application/json:
               schema:
@@ -173,12 +173,12 @@ paths:
         - in: path
           name: accountId
           required: true
-          description: Идентификатор счета
+          description: Account ID
           schema:
             type: integer
       responses:
         200:
-          description: Обновлен счет
+          description: Account updated
           content:
             application/json:
               schema:
@@ -188,9 +188,9 @@ paths:
               operationId: getAccount
               parameters:
                 accountId: '$response.body#/id'
-                description: Получим счет по его Id
+                description: Receiving an account by its ID
 
-    # Добавляем новый путь для Callback
+    # Add a new path for Callback
   /accounts/{accountId}/notify:
     post:
       tags:
@@ -200,18 +200,18 @@ paths:
         - in: path
           name: accountId
           required: true
-          description: Идентификатор счета
+          description: Account ID
           schema:
             type: integer
       requestBody:
-        description: Уведомление об изменении баланса
+        description: Balance Change Notification
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/NotifyBalanceChange"
       responses:
         200:
-          description: Успешное уведомление
+          description: Successful notification
 
 components:
   schemas:
@@ -237,7 +237,7 @@ components:
           type: string
         customerId:
           type: integer
-    # Добавляем новую схему для уведомления об изменении баланса
+    # Adding a new scheme for notifying about balance changes
     NotifyBalanceChange:
       type: object
       properties:
@@ -245,10 +245,10 @@ components:
           type: integer
         newBalance:
           type: integer
-    # Добавляем link для получения объекта Customer по ID
+    # Add a link to get the Customer object by ID
   links:
     getCustomerById:
-      description: Получим объект клиента по его Id
+      description: Let's get the client object by its Id
       operationId: getCustomer
       parameters:
         customerId: '$response.body#/customerId'

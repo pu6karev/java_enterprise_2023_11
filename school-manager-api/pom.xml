@@ -15,7 +15,7 @@
         <openapi-generator-maven-plugin.version>7.1.0</openapi-generator-maven-plugin.version>
     </properties>
 
-    <!--    <groupId> и <version> будут унаследованы из родительского POM-->
+    <!--    <groupId> и <version> will be inherited from the parent POM-->
     <artifactId>school-manager-api</artifactId>
 
     <dependencies>
