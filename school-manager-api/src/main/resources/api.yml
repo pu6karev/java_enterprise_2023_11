@@ -1,0 +1,254 @@
+openapi: 3.0.3
+
+info:
+  title: Bank-transaction-application API
+  description: >
+    Records are kept of clients and their accounts. An internal transfer is carried out between client accounts. 
+    Each account has its own currency. One client can have several accounts with different currencies.
+  version: 0.1.1
+
+servers:
+  - url: http://myserver:8080/api/customers
+    description: it keeps customers of the bank
+
+  - url: ${scheme}://${host}:${port}${subpath}
+    description: it keeps accounts
+    variables:
+      scheme:
+        enum:
+          - http
+          - https
+          - ftp
+        default: http
+      host:
+        default: localhost
+      port:
+        default: '8080'
+      subpath:
+        default: api/accounts
+
+tags:
+  - name: customers
+    description: Operations with customers
+  - name: accounts
+    description: Operations with accounts
+
+paths:
+  /customers:
+    get:
+      tags:
+        - customers
+      parameters:
+        - in: header
+          name: Cache-Control
+          description: Cache time
+          schema:
+            type: string
+        - in: query
+          name: limit
+          description: Number of entries per page
+          schema:
+            type: integer
+      operationId: getCustomers
+      responses:
+        200:
+          description: List of all clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Customer"
+
+    post:
+      tags:
+        - customers
+      operationId: createCustomer
+      responses:
+        201:
+          description: New client created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+          links:
+            getCustomerById:
+              $ref: '#/components/links/getCustomerById'
+
+
+  /customers/{customerId}:
+    get:
+      tags:
+        - customers
+      operationId: getCustomer
+      parameters:
+        - in: path
+          name: customerId
+          required: true
+          description: Client ID
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Individual client information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+    put:
+      tags:
+        - customers
+      operationId: updateCustomer
+      parameters:
+        - in: path
+          name: customerId
+          required: true
+          description: Client ID
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Client updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+
+  /accounts:
+    get:
+      tags:
+        - accounts
+      operationId: getAccounts
+      responses:
+        200:
+          description: List of all accounts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Account"
+    post:
+      tags:
+        - accounts
+      operationId: createAccount
+      responses:
+        201:
+          description: New account created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+
+  /accounts/{accountId}:
+    get:
+      tags:
+        - accounts
+      operationId: getAccount
+      parameters:
+        - in: path
+          name: accountId
+          required: true
+          description: Account ID
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Individual account information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+              example:  # Sample object
+                id: 12
+                iban: "UA12345678901234567890123456"
+                balance: 1000
+                currency: "UAH"
+                customerId: 1
+    put:
+      tags:
+        - accounts
+      operationId: updateAccount
+      parameters:
+        - in: path
+          name: accountId
+          required: true
+          description: Account ID
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Account updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+          links:
+            getAccountById:
+              operationId: getAccount
+              parameters:
+                accountId: '$response.body#/id'
+                description: Receiving an account by its ID
+
+    # Add a new path for Callback
+  /accounts/{accountId}/notify:
+    post:
+      tags:
+        - accounts
+      operationId: notifyBalanceChangeCallback
+      parameters:
+        - in: path
+          name: accountId
+          required: true
+          description: Account ID
+          schema:
+            type: integer
+      requestBody:
+        description: Balance Change Notification
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NotifyBalanceChange"
+      responses:
+        200:
+          description: Successful notification
+
+components:
+  schemas:
+    Customer:
+      type: object
+      properties:
+        customerId:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+    Account:
+      type: object
+      properties:
+        accountId:
+          type: integer
+        iban:
+          type: string
+        balance:
+          type: integer
+        currency:
+          type: string
+        customerId:
+          type: integer
+    # Adding a new scheme for notifying about balance changes
+    NotifyBalanceChange:
+      type: object
+      properties:
+        accountId:
+          type: integer
+        newBalance:
+          type: integer
+    # Add a link to get the Customer object by ID
+  links:
+    getCustomerById:
+      description: Let's get the client object by its Id
+      operationId: getCustomer
+      parameters:
+        customerId: '$response.body#/customerId'
