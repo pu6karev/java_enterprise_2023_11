@@ -16,7 +16,7 @@
     </properties>
 
     <!--    <groupId> и <version> will be inherited from the parent POM-->
-    <artifactId>school-manager-api</artifactId>
+    <artifactId>bank-manager-api</artifactId>
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
@@ -57,7 +57,7 @@
                 <version>${openapi-generator-maven-plugin.version}</version>
                 <executions>
                     <execution>
-                        <id>SCHOOL_MANAGER_API</id>
+                        <id>BANK_MANAGER_API</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>

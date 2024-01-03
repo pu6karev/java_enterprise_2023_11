@@ -64,6 +64,13 @@ paths:
       tags:
         - customers
       operationId: createCustomer
+      requestBody:
+        description: Customer object to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Customer"
       responses:
         201:
           description: New client created
@@ -106,6 +113,11 @@ paths:
           description: Client ID
           schema:
             type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Customer"
       responses:
         200:
           description: Client updated
@@ -114,6 +126,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Customer"
 
+  # Account section
   /accounts:
     get:
       tags:
@@ -128,17 +141,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Account"
-    post:
-      tags:
-        - accounts
-      operationId: createAccount
-      responses:
-        201:
-          description: New account created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Account"
 
   /accounts/{accountId}:
     get:
@@ -176,6 +178,11 @@ paths:
           description: Account ID
           schema:
             type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Account"
       responses:
         200:
           description: Account updated
@@ -189,6 +196,69 @@ paths:
               parameters:
                 accountId: '$response.body#/id'
                 description: Receiving an account by its ID
+
+    delete:
+      tags:
+        - accounts
+      operationId: deleteAccount
+      parameters:
+        - in: path
+          name: accountId
+          required: true
+          description: Account ID
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Account deleted successfully
+
+  /customers/{id}/accounts:
+    get:
+      tags:
+        - accounts
+      operationId: getAccountsByCustomer
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Customer ID
+          schema:
+            type: integer
+      responses:
+        200:
+          description: List of accounts by customer ID
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Account"
+
+    post:
+      tags:
+        - accounts
+      operationId: createAccount
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Customer ID
+          schema:
+            type: integer
+      requestBody:
+        description: Account object to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Account"
+      responses:
+        201:
+          description: New account created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
 
     # Add a new path for Callback
   /accounts/{accountId}/notify:
