@@ -26,7 +26,7 @@
     <!-- homework.item 2: To have all 3 modules-->
     <modules>
         <module>bank-manager-api</module>
-        <module>school-manager-server</module>
+        <module>bank-manager-server</module>
         <module>school-manager-coverage</module>
     </modules>
 

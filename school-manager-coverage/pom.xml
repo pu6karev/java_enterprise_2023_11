@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>com.hillel.multi</groupId>
-            <artifactId>school-manager-server</artifactId>
+            <artifactId>bank-manager-server</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
