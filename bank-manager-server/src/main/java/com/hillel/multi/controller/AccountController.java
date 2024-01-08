@@ -2,6 +2,7 @@ package com.hillel.multi.controller;
 
 import com.hillel.api.AccountsApi;
 import com.hillel.model.Account;
+import com.hillel.multi.configuration.exception.BankManagerException;
 import com.hillel.multi.service.AccountService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,9 @@ public class AccountController implements AccountsApi {
     @Override
     public ResponseEntity<Account> getAccount(Integer accountId) {
         Account account = accountService.getAccountById(accountId);
+        if(account == null) {
+            throw new BankManagerException("Account not found, accountId=" + accountId);
+        }
         return ResponseEntity.ok(account);
     }
 
