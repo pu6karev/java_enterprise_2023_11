@@ -6,8 +6,10 @@ Contract.make {
         urlPath("/api/accounts")
         method 'POST'
         body(
-            "name": "John Doe",
-            "balance": -100
+                "iban": "UA12345678901234567890123456",
+                "balance": -100,
+                "currency": "UAH",
+                "customerId": 1
         )
     }
     response {
