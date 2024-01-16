@@ -1,5 +1,7 @@
 {
-  "id": 1,
-  "name": "John Smith",
-  "balance": 100.0
+  "accountId": 1,
+  "iban": "UA12345678901234567890123456",
+  "balance": 100,
+  "currency": "UAH",
+  "customerId": 1
 }

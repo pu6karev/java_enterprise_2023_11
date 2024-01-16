@@ -37,7 +37,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <testFramework>JUNIT5</testFramework>
-                    <packageWithBaseClasses>contract.base</packageWithBaseClasses>
+                    <packageWithBaseClasses>com.hillel.multi.contract.base</packageWithBaseClasses>
                     <testMode>MOCKMVC</testMode>
                 </configuration>
             </plugin>

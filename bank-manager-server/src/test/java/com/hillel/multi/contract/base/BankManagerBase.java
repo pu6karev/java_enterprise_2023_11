@@ -1,4 +1,4 @@
-package contract.base;
+package com.hillel.multi.contract.base;
 
 import com.hillel.multi.controller.AccountController;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;

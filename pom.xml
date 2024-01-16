@@ -22,6 +22,7 @@
         <java.version>17</java.version>
         <spring-cloud-contract-plugin.version>4.1.0</spring-cloud-contract-plugin.version>
         <spring-cloud.version>2023.0.0</spring-cloud.version>
+        <hibernate.version>6.4.1.Final</hibernate.version>
     </properties>
 
 
@@ -48,11 +49,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>1.7.30</version>
-            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -63,6 +60,13 @@
             <artifactId>lombok</artifactId>
             <version>1.18.30</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core -->
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
