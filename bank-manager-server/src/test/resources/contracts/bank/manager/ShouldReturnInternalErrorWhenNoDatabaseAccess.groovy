@@ -3,16 +3,13 @@ import org.springframework.cloud.contract.spec.Contract
 
 Contract.make {
     request {
-        urlPath("/api/accounts")
-        method 'POST'
-        body(file("new_account.json"))
+        def id = 2
+        urlPath("/api/accounts/${id}")
+        method 'GET'
     }
     response {
-        status INTERNAL_SERVER_ERROR()
-        body """
-        {
-            "error": "Internal server error"
-        }
-        """
+        status INTERNAL_SERVER_ERROR()  // 500
+        body(file("invalid_account.json"))
+        description 'Simulate database access error'
     }
 }

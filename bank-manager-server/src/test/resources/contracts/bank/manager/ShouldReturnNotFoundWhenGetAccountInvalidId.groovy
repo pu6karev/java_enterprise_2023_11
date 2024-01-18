@@ -9,6 +9,9 @@ Contract.make {
     }
     response {
         status NOT_FOUND()
-        body("error": "Account not found")
+        body("Account not found, accountId=999")
+        headers {
+            header 'Content-Type': 'text/plain;charset=UTF-8'
+        }
     }
 }

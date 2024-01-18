@@ -2,9 +2,11 @@ package com.hillel.multi.controller;
 
 import com.hillel.api.AccountsApi;
 import com.hillel.model.Account;
-import com.hillel.multi.configuration.exception.BankManagerException;
+import com.hillel.multi.configuration.exception.BankManagerDatabaseAccessException;
+import com.hillel.multi.configuration.exception.BankManagerNotFoundException;
 import com.hillel.multi.service.AccountService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,12 +38,18 @@ public class AccountController implements AccountsApi {
     }
 
     @Override
-    public ResponseEntity<Account> getAccount(Integer accountId) {
-        Account account = accountService.getAccountById(accountId);
-        if(account == null) {
-            throw new BankManagerException("Account not found, accountId=" + accountId);
+    public ResponseEntity<Account> getAccount(Integer accountId) throws BankManagerNotFoundException {
+        try {
+            Account account = accountService.getAccountById(accountId);
+            if (account == null) {
+                throw new BankManagerNotFoundException("Account not found, accountId=" + accountId);
+            }
+            return ResponseEntity.ok(account);
+        } catch (BankManagerDatabaseAccessException e) {
+            // Catch an exception that can be thrown when there is no access to the database
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new Account(0, "errorIBAN", 0, "errorCurrency", 0));
         }
-        return ResponseEntity.ok(account);
     }
 
     @Override

@@ -3,9 +3,12 @@ import org.springframework.cloud.contract.spec.Contract
 
 Contract.make {
     request {
-        urlPath("/api/accounts")
+        urlPath("/api/customers/1/accounts")
         method 'POST'
-        body(file("new_account.json"))
+        headers {
+            contentType(applicationJson())
+        }
+        body(file("valid_account.json"))
     }
     response {
         status CREATED()
