@@ -79,6 +79,7 @@
                                 <disallowAdditionalPropertiesIfNotPresent>
                                     false
                                 </disallowAdditionalPropertiesIfNotPresent>
+                                <generatedConstructorWithRequiredArgs>true</generatedConstructorWithRequiredArgs>
                             </configOptions>
                             <globalProperties>
                                 <skipFormModel>false</skipFormModel>

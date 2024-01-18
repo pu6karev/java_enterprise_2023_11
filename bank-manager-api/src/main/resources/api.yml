@@ -287,6 +287,10 @@ components:
   schemas:
     Customer:
       type: object
+      required:
+        - customerId
+        - name
+        - email
       properties:
         customerId:
           type: integer
@@ -296,6 +300,12 @@ components:
           type: string
     Account:
       type: object
+      required:
+        - accountId
+        - iban
+        - balance
+        - currency
+        - customerId
       properties:
         accountId:
           type: integer
