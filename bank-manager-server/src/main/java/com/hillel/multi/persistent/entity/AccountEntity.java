@@ -1,5 +1,6 @@
 package com.hillel.multi.persistent.entity;
 
+import com.hillel.multi.validation.annotation.ValidCurrency;
 import jakarta.persistence.*;
 
 @Entity
@@ -18,6 +19,7 @@ public class AccountEntity {
     private Integer balance;
 
     @Column(name = "currency", nullable = false)
+    @ValidCurrency
     private String currency;
 
     @ManyToOne

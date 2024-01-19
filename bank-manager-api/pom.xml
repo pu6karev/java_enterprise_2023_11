@@ -80,6 +80,7 @@
                                     false
                                 </disallowAdditionalPropertiesIfNotPresent>
                                 <generatedConstructorWithRequiredArgs>true</generatedConstructorWithRequiredArgs>
+                                <useBeanValidation>true</useBeanValidation>
                             </configOptions>
                             <globalProperties>
                                 <skipFormModel>false</skipFormModel>
