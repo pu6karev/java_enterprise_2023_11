@@ -1,5 +1,6 @@
 package com.hillel.multi.persistent.entity;
 
+import com.hillel.multi.validation.annotation.ValidEmailDomain;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class CustomerEntity {
     private String name;
 
     @Column(name = "email")
+    @ValidEmailDomain
     private String email;
 
     @OneToMany(mappedBy = "owner")
