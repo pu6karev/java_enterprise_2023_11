@@ -1,0 +1,74 @@
+package com.hillel.entitytest;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "accounts")
+public class AccountEnt {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "account_id")
+    private Integer accountId;
+
+    @Column(name = "iban", unique = true)
+    private String iban;
+
+    @Column(name = "balance")
+    private Integer balance;
+
+    @Column(name = "currency", nullable = false)
+    private String currency;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
+    private CustomerEnt owner;
+
+    public AccountEnt(){}
+
+    public AccountEnt(String iban, Integer balance, String currency) {
+        this.iban = iban;
+        this.balance = balance;
+        this.currency = currency;
+    }
+
+    public Integer getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Integer accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getIban() {
+        return iban;
+    }
+
+    public void setIban(String iban) {
+        this.iban = iban;
+    }
+
+    public Integer getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Integer balance) {
+        this.balance = balance;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public CustomerEnt getOwner() {
+        return owner;
+    }
+
+    public void setOwner(CustomerEnt owner) {
+        this.owner = owner;
+    }
+}
