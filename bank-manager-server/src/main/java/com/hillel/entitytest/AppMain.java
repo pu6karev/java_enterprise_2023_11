@@ -22,5 +22,21 @@ public class AppMain {
         for (CustomerEnt customer : customers) {
             System.out.println(customer.getName());
         }
+
+        AccountEntService accountService = context.getBean(AccountEntService.class);
+
+        AccountEnt account1 = new AccountEnt("UA1234567890123456", 100, "USD");
+        AccountEnt account2 = new AccountEnt("UA1234567890123457", 50, "EUR");
+
+        accountService.createAccount(customer1.getCustomerId(),  account1);
+        accountService.createAccount(customer2.getCustomerId(),  account2);
+
+        List<AccountEnt> accounts = accountService.getAllAccounts();
+        for (AccountEnt account : accounts) {
+            System.out.println(account.getIban());
+            System.out.println(account.getBalance());
+            System.out.println(account.getCurrency());
+            System.out.println(account.getOwner().getName());
+        }
     }
 }
