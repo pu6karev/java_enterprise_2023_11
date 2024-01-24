@@ -42,7 +42,7 @@ public class EntityValidationTest {
 
     @Test
     public void testInvalidCurrency() {
-        AccountEntity account = new AccountEntity("DE12345678901234567890", 1000, "usd", null);
+        AccountEntity account = new AccountEntity("DE12345678901234567890", 1000, "usd");
         Set<ConstraintViolation<AccountEntity>> violations = validator.validate(account);
 
         assertEquals(1, violations.size());
