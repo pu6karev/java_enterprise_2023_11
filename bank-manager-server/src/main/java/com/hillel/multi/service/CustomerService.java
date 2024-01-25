@@ -1,6 +1,6 @@
 package com.hillel.multi.service;
 
-import com.hillel.model.Customer;
+import com.hillel.model.CustomerDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,19 +8,19 @@ import java.util.List;
 @Service
 public class CustomerService {
 
-    public List<Customer> getAllCustomers(){
+    public List<CustomerDTO> getAllCustomers(){
         return null;
     }
 
-    public Customer getCustomerById(Integer customerId){
+    public CustomerDTO getCustomerById(Integer customerId){
         return null;
     }
 
-    public Customer createCustomer(Customer customer){
+    public CustomerDTO createCustomer(CustomerDTO customer){
         return null;
     }
 
-    public Customer updateCustomer(Integer customerId, Customer customer){
+    public CustomerDTO updateCustomer(Integer customerId, CustomerDTO customer){
         return null;
     }
 

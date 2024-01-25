@@ -1,6 +1,6 @@
 package com.hillel.multi.service;
 
-import com.hillel.model.Account;
+import com.hillel.model.AccountDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,23 +8,23 @@ import java.util.List;
 @Service
 public class AccountService {
 
-    public List<Account> getAllAccounts(){
+    public List<AccountDTO> getAllAccounts(){
         return  null;
     }
 
-    public List<Account> getAccountsByCustomer(Integer customerId){
+    public List<AccountDTO> getAccountsByCustomer(Integer customerId){
         return null;
     }
 
-    public Account getAccountById(Integer accountId){
+    public AccountDTO getAccountById(Integer accountId){
         return null;
     }
 
-    public Account createAccount(Integer customerId, Account account){
+    public AccountDTO createAccount(Integer customerId, AccountDTO account){
         return null;
     }
 
-    public Account updateAccount(Integer customerId, Account account){
+    public AccountDTO updateAccount(Integer customerId, AccountDTO account){
         return null;
     }
 

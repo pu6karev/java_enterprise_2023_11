@@ -1,7 +1,7 @@
 package com.hillel.multi.contract.base;
 
 
-import com.hillel.model.Account;
+import com.hillel.model.AccountDTO;
 import com.hillel.multi.configuration.exception.BankManagerDatabaseAccessException;
 import com.hillel.multi.controller.AccountController;
 import com.hillel.multi.service.AccountService;
@@ -29,7 +29,7 @@ public class BankManagerBase {
         RestAssuredMockMvc.webAppContextSetup(context);
 
         // positive
-        Account testAccount1 = new Account(1, "UA12345678901234567890123456", 100, "UAH", 1);
+        AccountDTO testAccount1 = new AccountDTO("UA12345678901234567890123456", 100, "UAH", 1);
         Mockito.doReturn(testAccount1).when(accountService).getAccountById(1);
         Mockito.doReturn(testAccount1).when(accountService).createAccount(1, testAccount1);
 

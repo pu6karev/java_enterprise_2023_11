@@ -1,7 +1,7 @@
 package com.hillel.multi.controller;
 
 import com.hillel.api.CustomersApi;
-import com.hillel.model.Customer;
+import com.hillel.model.CustomerDTO;
 import com.hillel.multi.service.CustomerService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -21,26 +21,26 @@ public class CustomerController implements CustomersApi {
     }
 
     @Override
-    public ResponseEntity<Customer> createCustomer(@Valid @RequestBody Customer customer) {
-        Customer newCustomer = customerService.createCustomer(customer);
+    public ResponseEntity<CustomerDTO> createCustomer(@Valid @RequestBody CustomerDTO customer) {
+        CustomerDTO newCustomer = customerService.createCustomer(customer);
         return ResponseEntity.status(201).body(newCustomer);
     }
 
     @Override
-    public ResponseEntity<Customer> getCustomer(Integer customerId) {
-        Customer customer = customerService.getCustomerById(customerId);
+    public ResponseEntity<CustomerDTO> getCustomer(Integer customerId) {
+        CustomerDTO customer = customerService.getCustomerById(customerId);
         return ResponseEntity.ok(customer);
     }
 
     @Override
-    public ResponseEntity<List<Customer>> getCustomers(String cacheControl, Integer limit) {
-        List<Customer> customers = customerService.getAllCustomers();
+    public ResponseEntity<List<CustomerDTO>> getCustomers(String cacheControl, Integer limit) {
+        List<CustomerDTO> customers = customerService.getAllCustomers();
         return ResponseEntity.ok(customers);
     }
 
     @Override
-    public ResponseEntity<Customer> updateCustomer(Integer customerId, Customer customer) {
-        Customer updatedCustomer = customerService.updateCustomer(customerId, customer);
+    public ResponseEntity<CustomerDTO> updateCustomer(Integer customerId, CustomerDTO customer) {
+        CustomerDTO updatedCustomer = customerService.updateCustomer(customerId, customer);
         return ResponseEntity.ok(updatedCustomer);
     }
 }

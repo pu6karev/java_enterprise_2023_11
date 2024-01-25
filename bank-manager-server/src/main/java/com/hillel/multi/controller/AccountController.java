@@ -1,7 +1,7 @@
 package com.hillel.multi.controller;
 
 import com.hillel.api.AccountsApi;
-import com.hillel.model.Account;
+import com.hillel.model.AccountDTO;
 import com.hillel.multi.configuration.exception.BankManagerDatabaseAccessException;
 import com.hillel.multi.configuration.exception.BankManagerNotFoundException;
 import com.hillel.multi.service.AccountService;
@@ -26,15 +26,15 @@ public class AccountController implements AccountsApi {
     }
 
     @Override
-    public ResponseEntity<Account> createAccount(Integer id, @Valid @RequestBody Account account) {
-        Account newAccount = accountService.createAccount(id, account);
+    public ResponseEntity<AccountDTO> createAccount(Integer id, @Valid @RequestBody AccountDTO account) {
+        AccountDTO newAccount = accountService.createAccount(id, account);
         return ResponseEntity.status(201).body(newAccount);
     }
 
 
     @Override
-    public ResponseEntity<List<Account>> getAccounts() {
-        List<Account> accounts = accountService.getAllAccounts();
+    public ResponseEntity<List<AccountDTO>> getAccounts() {
+        List<AccountDTO> accounts = accountService.getAllAccounts();
         return ResponseEntity.ok(accounts);
     }
 
@@ -44,9 +44,9 @@ public class AccountController implements AccountsApi {
     }
 
     @Override
-    public ResponseEntity<Account> getAccount(Integer accountId) throws BankManagerNotFoundException {
+    public ResponseEntity<AccountDTO> getAccount(Integer accountId) throws BankManagerNotFoundException {
         try {
-            Account account = accountService.getAccountById(accountId);
+            AccountDTO account = accountService.getAccountById(accountId);
             if (account == null) {
                 throw new BankManagerNotFoundException("Account not found, accountId=" + accountId);
             }
@@ -54,19 +54,19 @@ public class AccountController implements AccountsApi {
         } catch (BankManagerDatabaseAccessException e) {
             // Catch an exception that can be thrown when there is no access to the database
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new Account(0, "errorIBAN", 0, "errorCurrency", 0));
+                    .body(new AccountDTO("errorIBAN", 0, "errorCurrency", 0));
         }
     }
 
     @Override
-    public ResponseEntity<List<Account>> getAccountsByCustomer(Integer id) {
-        List<Account> accounts = accountService.getAccountsByCustomer(id);
+    public ResponseEntity<List<AccountDTO>> getAccountsByCustomer(Integer id) {
+        List<AccountDTO> accounts = accountService.getAccountsByCustomer(id);
         return ResponseEntity.ok(accounts);
     }
 
     @Override
-    public ResponseEntity<Account> updateAccount(Integer accountId, Account account) {
-        Account updatedAccount = accountService.updateAccount(accountId, account);
+    public ResponseEntity<AccountDTO> updateAccount(Integer accountId, AccountDTO account) {
+        AccountDTO updatedAccount = accountService.updateAccount(accountId, account);
         return ResponseEntity.ok(updatedAccount);
     }
 
