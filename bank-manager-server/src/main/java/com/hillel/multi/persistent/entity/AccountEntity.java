@@ -28,11 +28,10 @@ public class AccountEntity {
 
     public AccountEntity(){}
 
-    public AccountEntity(String iban, Integer balance, String currency, CustomerEntity owner) {
+    public AccountEntity(String iban, Integer balance, String currency) {
         this.iban = iban;
         this.balance = balance;
         this.currency = currency;
-        this.owner = owner;
     }
 
     public Integer getAccountId() {

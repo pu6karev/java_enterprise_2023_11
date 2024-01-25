@@ -24,6 +24,9 @@
         <spring-cloud.version>2023.0.0</spring-cloud.version>
         <hibernate.version>6.4.1.Final</hibernate.version>
         <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
+        <sping-boot-starter-data-jpa.version>3.1.0</sping-boot-starter-data-jpa.version>
+        <postgresql.version>42.7.1</postgresql.version>
+        <flyway-core.version>9.15.2</flyway-core.version>
     </properties>
 
 
@@ -75,7 +78,6 @@
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate-validator.version}</version>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
