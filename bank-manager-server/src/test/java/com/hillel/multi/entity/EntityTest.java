@@ -1,9 +1,11 @@
 package com.hillel.multi.entity;
 
+import com.hillel.model.AccountDTO;
+import com.hillel.model.CustomerDTO;
 import com.hillel.multi.persistent.entity.AccountEntity;
 import com.hillel.multi.persistent.entity.CustomerEntity;
-import com.hillel.multi.persistent.service.AccountEntityService;
-import com.hillel.multi.persistent.service.CustomerEntityService;
+import com.hillel.multi.service.AccountEntityService;
+import com.hillel.multi.service.CustomerEntityService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,19 +24,21 @@ public class EntityTest {
 
     @Test
     public void testApplication() {
-        CustomerEntity customer1 = new CustomerEntity("Tim Burton", "burtonTim@gmail.com");
-        customerService.createCustomer(customer1);
+        CustomerDTO customerDTO = new CustomerDTO("Tim Burton", "burtonTim@gmail.com");
+        CustomerEntity customerEntity = customerService.createCustomer(customerDTO);
+        //CustomerEntity customerEntity = CustomerMapper.INSTANCE.toEntity(createdCustomerDTO);
 
-        AccountEntity account1 = new AccountEntity("UA9876543210123456", 200, "GBP");
-        accountService.createAccount(customer1.getCustomerId(), account1);
+        AccountDTO accountDTO = new AccountDTO("UA9876543210123456", 200, "GBP");
+        AccountEntity accountEntity = accountService.createAccount(customerEntity.getCustomerId(), accountDTO);
+        //AccountEntity accountEntity = AccountMapper.INSTANCE.toEntity(createdAccountDTO);
 
         // get data from database
-        CustomerEntity retrievedCustomer = customerService.getCustomerById(customer1.getCustomerId());
+        CustomerEntity retrievedCustomer = customerService.getCustomerById(customerEntity.getCustomerId());
         assertEquals("Tim Burton", retrievedCustomer.getName());
 
-        AccountEntity retrievedAccount = accountService.getAccountById(account1.getAccountId());
+        AccountEntity retrievedAccount = accountService.getAccountById(accountEntity.getAccountId());
         assertEquals(200, retrievedAccount.getBalance());
         assertEquals("GBP", retrievedAccount.getCurrency());
-        assertEquals("Tim Burton", retrievedAccount.getOwner().getName());
+        assertEquals("Tim Burton", accountEntity.getOwner().getName());
     }
 }

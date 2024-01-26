@@ -301,7 +301,6 @@ components:
         - iban
         - balance
         - currency
-        - customerId
       properties:
         iban:
           type: string
