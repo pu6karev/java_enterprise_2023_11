@@ -1,7 +1,9 @@
-package com.hillel.multi.persistent.service;
+package com.hillel.multi.service;
 
+import com.hillel.model.CustomerDTO;
 import com.hillel.multi.persistent.entity.CustomerEntity;
 import com.hillel.multi.persistent.repository.CustomerEntityRepository;
+import com.hillel.multi.service.mapper.CustomerMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,16 +29,19 @@ public class CustomerEntityService {
     }
 
     @Transactional
-    public CustomerEntity createCustomer(CustomerEntity customer){
-        return customerRepository.save(customer);
+    public CustomerEntity createCustomer(CustomerDTO customerDTO){
+        CustomerEntity customerEntity = CustomerMapper.INSTANCE.toEntity(customerDTO);
+        return customerRepository.save(customerEntity);
     }
 
     @Transactional
-    public CustomerEntity updateCustomer(Integer customerId, CustomerEntity customerUpdated){
-        var customer = customerRepository.findById(customerId).orElseThrow();
-        customer.setName(customerUpdated.getName());
-        customer.setEmail(customerUpdated.getEmail());
-        return customerRepository.save(customer);
+    public CustomerEntity updateCustomer(Integer customerId, CustomerDTO customerDTOUpdated){
+        CustomerEntity customerEntity = customerRepository.findById(customerId).orElseThrow();
+
+        customerEntity.setName(customerDTOUpdated.getName());
+        customerEntity.setEmail(customerDTOUpdated.getEmail());
+
+        return customerRepository.save(customerEntity);
     }
 
     @Transactional

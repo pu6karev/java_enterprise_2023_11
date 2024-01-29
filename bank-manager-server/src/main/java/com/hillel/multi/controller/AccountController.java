@@ -1,10 +1,12 @@
 package com.hillel.multi.controller;
 
 import com.hillel.api.AccountsApi;
-import com.hillel.model.Account;
+import com.hillel.model.AccountDTO;
 import com.hillel.multi.configuration.exception.BankManagerDatabaseAccessException;
 import com.hillel.multi.configuration.exception.BankManagerNotFoundException;
-import com.hillel.multi.service.AccountService;
+import com.hillel.multi.persistent.entity.AccountEntity;
+import com.hillel.multi.service.AccountEntityService;
+import com.hillel.multi.service.mapper.AccountMapper;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,23 +21,26 @@ import java.util.List;
 @RequestMapping("/api")
 public class AccountController implements AccountsApi {
 
-    private final AccountService accountService;
+    private final AccountEntityService accountService;
 
-    public AccountController(AccountService accountService) {
+    public AccountController(AccountEntityService accountService) {
         this.accountService = accountService;
     }
 
     @Override
-    public ResponseEntity<Account> createAccount(Integer id, @Valid @RequestBody Account account) {
-        Account newAccount = accountService.createAccount(id, account);
-        return ResponseEntity.status(201).body(newAccount);
+    public ResponseEntity<AccountDTO> createAccount(Integer id, @Valid @RequestBody AccountDTO accountDTO) {
+        AccountEntity createdAccount = accountService.createAccount(id, accountDTO);
+        AccountDTO newAccountDTO = AccountMapper.INSTANCE.toDTO(createdAccount);
+        newAccountDTO.setCustomerId(id);
+        return ResponseEntity.status(201).body(newAccountDTO);
     }
 
 
     @Override
-    public ResponseEntity<List<Account>> getAccounts() {
-        List<Account> accounts = accountService.getAllAccounts();
-        return ResponseEntity.ok(accounts);
+    public ResponseEntity<List<AccountDTO>> getAccounts() {
+        List<AccountEntity> accountsEntity = accountService.getAllAccounts();
+        List<AccountDTO> accountsDTO = AccountMapper.INSTANCE.toDTOList(accountsEntity);
+        return ResponseEntity.ok(accountsDTO);
     }
 
     @ExceptionHandler(BankManagerNotFoundException.class)
@@ -44,30 +49,33 @@ public class AccountController implements AccountsApi {
     }
 
     @Override
-    public ResponseEntity<Account> getAccount(Integer accountId) throws BankManagerNotFoundException {
+    public ResponseEntity<AccountDTO> getAccount(Integer accountId) throws BankManagerNotFoundException {
         try {
-            Account account = accountService.getAccountById(accountId);
-            if (account == null) {
+            AccountEntity accountEntity = accountService.getAccountById(accountId);
+            AccountDTO accountDTO = AccountMapper.INSTANCE.toDTO(accountEntity);
+            if (accountDTO == null) {
                 throw new BankManagerNotFoundException("Account not found, accountId=" + accountId);
             }
-            return ResponseEntity.ok(account);
+            return ResponseEntity.ok(accountDTO);
         } catch (BankManagerDatabaseAccessException e) {
             // Catch an exception that can be thrown when there is no access to the database
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new Account(0, "errorIBAN", 0, "errorCurrency", 0));
+                    .body(new AccountDTO("errorIBAN", 0, "errorCurrency"));
         }
     }
 
     @Override
-    public ResponseEntity<List<Account>> getAccountsByCustomer(Integer id) {
-        List<Account> accounts = accountService.getAccountsByCustomer(id);
+    public ResponseEntity<List<AccountDTO>> getAccountsByCustomer(Integer id) {
+        List<AccountEntity> accountsEntity = accountService.getAccountsByCustomer(id);
+        List<AccountDTO> accounts = AccountMapper.INSTANCE.toDTOList(accountsEntity);
         return ResponseEntity.ok(accounts);
     }
 
     @Override
-    public ResponseEntity<Account> updateAccount(Integer accountId, Account account) {
-        Account updatedAccount = accountService.updateAccount(accountId, account);
-        return ResponseEntity.ok(updatedAccount);
+    public ResponseEntity<AccountDTO> updateAccount(Integer accountId, AccountDTO accountDTO) {
+        AccountEntity updatedAccount = accountService.updateAccount(accountId, accountDTO);
+        AccountDTO updatedAccountDTO = AccountMapper.INSTANCE.toDTO(updatedAccount);
+        return ResponseEntity.ok(updatedAccountDTO);
     }
 
 

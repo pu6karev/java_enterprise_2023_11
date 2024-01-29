@@ -1,10 +1,14 @@
 package com.hillel.multi.contract.base;
 
 
-import com.hillel.model.Account;
+import com.hillel.model.AccountDTO;
 import com.hillel.multi.configuration.exception.BankManagerDatabaseAccessException;
 import com.hillel.multi.controller.AccountController;
-import com.hillel.multi.service.AccountService;
+import com.hillel.multi.persistent.entity.AccountEntity;
+import com.hillel.multi.persistent.entity.CustomerEntity;
+import com.hillel.multi.service.AccountEntityService;
+import com.hillel.multi.service.CustomerEntityService;
+import com.hillel.multi.service.mapper.AccountMapper;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
@@ -22,16 +26,23 @@ public class BankManagerBase {
     private WebApplicationContext context;
 
     @MockBean
-    private AccountService accountService;
+    private AccountEntityService accountService;
+    @MockBean
+    private CustomerEntityService customerService;
 
     @BeforeEach
     public void setup(){
         RestAssuredMockMvc.webAppContextSetup(context);
+         // --- create customer for account
+        CustomerEntity customerEntity = new CustomerEntity("Tom Hart", "tom@gmail.com");
+        customerEntity.setCustomerId(1);
+         // --- create account
+        AccountDTO accountDTO = new AccountDTO("UA12345678901234567890123456", 100, "UAH");
+        AccountEntity accountEntity = AccountMapper.INSTANCE.toEntity(accountDTO);
+        accountEntity.setOwner(customerEntity);
 
-        // positive
-        Account testAccount1 = new Account(1, "UA12345678901234567890123456", 100, "UAH", 1);
-        Mockito.doReturn(testAccount1).when(accountService).getAccountById(1);
-        Mockito.doReturn(testAccount1).when(accountService).createAccount(1, testAccount1);
+        Mockito.doReturn(accountEntity).when(accountService).createAccount(1, accountDTO);
+        Mockito.doReturn(accountEntity).when(accountService).getAccountById(1);
 
         // negative, when invalid accountId
         Mockito.doReturn(null).when(accountService).getAccountById(999);

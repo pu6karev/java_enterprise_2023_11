@@ -58,7 +58,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Customer"
+                  $ref: "#/components/schemas/CustomerDTO"
 
     post:
       tags:
@@ -70,14 +70,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Customer"
+              $ref: "#/components/schemas/CustomerDTO"
       responses:
         201:
           description: New client created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Customer"
+                $ref: "#/components/schemas/CustomerDTO"
           links:
             getCustomerById:
               $ref: '#/components/links/getCustomerById'
@@ -101,7 +101,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Customer"
+                $ref: "#/components/schemas/CustomerDTO"
     put:
       tags:
         - customers
@@ -117,14 +117,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Customer"
+              $ref: "#/components/schemas/CustomerDTO"
       responses:
         200:
           description: Client updated
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Customer"
+                $ref: "#/components/schemas/CustomerDTO"
 
   # Account section
   /accounts:
@@ -140,7 +140,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Account"
+                  $ref: "#/components/schemas/AccountDTO"
 
   /accounts/{accountId}:
     get:
@@ -160,9 +160,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Account"
+                $ref: "#/components/schemas/AccountDTO"
               example:  # Sample object
-                id: 12
                 iban: "UA12345678901234567890123456"
                 balance: 1000
                 currency: "UAH"
@@ -182,19 +181,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Account"
+              $ref: "#/components/schemas/AccountDTO"
       responses:
         200:
           description: Account updated
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Account"
+                $ref: "#/components/schemas/AccountDTO"
           links:
             getAccountById:
               operationId: getAccount
               parameters:
-                accountId: '$response.body#/id'
+                accountId: '$response.body#/accountId'
                 description: Receiving an account by its ID
 
     delete:
@@ -232,7 +231,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Account"
+                  $ref: "#/components/schemas/AccountDTO"
 
     post:
       tags:
@@ -251,14 +250,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Account"
+              $ref: "#/components/schemas/AccountDTO"
       responses:
         201:
           description: New account created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Account"
+                $ref: "#/components/schemas/AccountDTO"
 
     # Add a new path for Callback
   /accounts/{accountId}/notify:
@@ -285,30 +284,24 @@ paths:
 
 components:
   schemas:
-    Customer:
+    CustomerDTO:
       type: object
       required:
         - customerId
         - name
         - email
       properties:
-        customerId:
-          type: integer
         name:
           type: string
         email:
           type: string
-    Account:
+    AccountDTO:
       type: object
       required:
-        - accountId
         - iban
         - balance
         - currency
-        - customerId
       properties:
-        accountId:
-          type: integer
         iban:
           type: string
         balance:

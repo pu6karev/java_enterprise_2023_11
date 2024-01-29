@@ -1,7 +1,5 @@
 {
-  "accountId": 0,
   "iban": "errorIBAN",
   "balance": 0,
-  "currency": "errorCurrency",
-  "customerId": 0
+  "currency": "errorCurrency"
 }
