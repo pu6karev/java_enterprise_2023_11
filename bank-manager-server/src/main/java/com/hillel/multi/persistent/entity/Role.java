@@ -25,17 +25,17 @@ public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private Integer id;
 
     public Role() {
 
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
