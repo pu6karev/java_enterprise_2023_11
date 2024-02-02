@@ -3,7 +3,7 @@ package com.hillel.multi.contract.base;
 
 import com.hillel.model.AccountDTO;
 import com.hillel.multi.configuration.exception.BankManagerDatabaseAccessException;
-import com.hillel.multi.controller.AccountController;
+import com.hillel.multi.presentation.controller.AccountController;
 import com.hillel.multi.persistent.entity.AccountEntity;
 import com.hillel.multi.persistent.entity.CustomerEntity;
 import com.hillel.multi.service.AccountEntityService;
