@@ -1,4 +1,4 @@
-package com.hillel.multi.controller.configuration.handler;
+package com.hillel.multi.presentation.controller.configuration.handler;
 
 import com.hillel.multi.configuration.exception.BankManagerNotFoundException;
 import com.hillel.multi.configuration.exception.ErrorDetails;
