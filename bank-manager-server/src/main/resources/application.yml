@@ -19,3 +19,15 @@ spring:
             scripts:
               action: create
               create-target: create.sql
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health, custom
+  health:
+    status:
+      format: json
