@@ -105,7 +105,7 @@ public class User implements UserDetails {
     @Column(name = "full_name")
     private String fullName;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private List<Role> authorities = new ArrayList<>();
 
