@@ -24,7 +24,7 @@ public class Role implements GrantedAuthority {
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     public Role() {

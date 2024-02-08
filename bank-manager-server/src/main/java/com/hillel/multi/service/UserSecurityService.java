@@ -2,41 +2,38 @@ package com.hillel.multi.service;
 
 import com.hillel.multi.persistent.entity.User;
 import com.hillel.multi.persistent.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
-@Transactional
-public class UserServiceImpl implements UserService {
+public class UserSecurityService implements UserDetailsService {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userDetailsService.loadUserByUsername(username);
+    public UserSecurityService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("User: %s not found", username)));
+    }
+
     public Optional<? extends UserDetails> findByToken(String token) {
         return userRepository.findByToken(token);
     }
 
-    @Override
     public Optional<User> findByUsernameAndPassword(String name, String password) {
         return userRepository.findByUsernameAndPassword(name, password);
     }
 
-    @Override
+    @Transactional
     public void save(User user) {
         userRepository.save(user);
     }

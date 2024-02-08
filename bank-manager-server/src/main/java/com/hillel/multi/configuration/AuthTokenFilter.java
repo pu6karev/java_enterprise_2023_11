@@ -1,7 +1,7 @@
 package com.hillel.multi.configuration;
 
 
-import com.hillel.multi.service.UserService;
+import com.hillel.multi.service.UserSecurityService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +23,7 @@ import java.util.Optional;
 public class AuthTokenFilter extends OncePerRequestFilter {
 
     @Autowired
-    private UserService userService;
+    private UserSecurityService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

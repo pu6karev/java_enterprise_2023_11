@@ -1,0 +1,1 @@
+ALTER TABLE authorities ALTER COLUMN authority TYPE VARCHAR(20);
