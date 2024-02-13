@@ -3,7 +3,7 @@ package com.hillel.multi.presentation.controller;
 import com.hillel.multi.persistent.entity.Role;
 import com.hillel.multi.persistent.entity.User;
 import com.hillel.multi.presentation.model.UserInfo;
-import com.hillel.multi.service.UserService;
+import com.hillel.multi.service.UserSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class Login {
 
     @Autowired
-    private UserService service;
+    private UserSecurityService service;
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestParam String name, @RequestParam String password) {

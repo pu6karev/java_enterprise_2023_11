@@ -3,7 +3,6 @@ package com.hillel.multi.contract.base;
 
 import com.hillel.model.AccountDTO;
 import com.hillel.multi.configuration.exception.BankManagerDatabaseAccessException;
-import com.hillel.multi.presentation.controller.AccountController;
 import com.hillel.multi.persistent.entity.AccountEntity;
 import com.hillel.multi.persistent.entity.CustomerEntity;
 import com.hillel.multi.service.AccountEntityService;
@@ -14,11 +13,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.context.WebApplicationContext;
 
-@WebMvcTest(controllers = AccountController.class)
+@SpringBootTest
 @AutoConfigureMockMvc
 public class BankManagerBase {
 
