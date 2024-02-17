@@ -1,0 +1,17 @@
+image:
+  repository: bank-manager-server
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8080
+
+postgres:
+  image:
+    repository: postgres
+    tag: latest
+    pullPolicy: IfNotPresent
+  postgresUsername: postgres
+  postgresPassword: postgres
+  postgresDatabase: ee_bankdb

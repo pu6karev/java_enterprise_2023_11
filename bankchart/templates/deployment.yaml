@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bank-manager-server
+  labels:
+    app: bank-manager-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bank-manager-server
+  template:
+    metadata:
+      labels:
+        app: bank-manager-server
+    spec:
+      containers:
+        - name: bank-manager-server
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://bank-manager-postgres:5432/{{ .Values.postgres.postgresDatabase }}"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "{{ .Values.postgres.postgresUsername }}"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "{{ .Values.postgres.postgresPassword }}"
