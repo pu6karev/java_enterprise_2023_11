@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bank-manager-postgres
+  name: {{ template "postgresServiceName" . }}
   labels:
-    app: bank-manager-postgres
+    app: {{ template "postgresServiceName" . }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: bank-manager-postgres
+      app: {{ template "postgresServiceName" . }}
   template:
     metadata:
       labels:
-        app: bank-manager-postgres
+        app: {{ template "postgresServiceName" . }}
     spec:
       containers:
         - name: postgres
@@ -20,7 +20,7 @@ spec:
           imagePullPolicy: {{ .Values.postgres.image.pullPolicy }}
           ports:
             - name: postgres
-              containerPort: 5432
+              containerPort: {{ .Values.containerPorts.database }}
           env:
             - name: POSTGRES_DB
               value: "{{ .Values.postgres.postgresDatabase }}"
