@@ -1,0 +1,5 @@
+apiVersion: v2
+name: bank-manager
+description: A Helm chart for deploying the bank-manager application and PostgreSQL database.
+version: 1.0.0
+appVersion: 1.0.0
